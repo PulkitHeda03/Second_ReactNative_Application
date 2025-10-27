@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
     color: 'white',
-    margin: 8,
+    marginVertical: 8,
   },
   card: {
     justifyContent: 'center',
