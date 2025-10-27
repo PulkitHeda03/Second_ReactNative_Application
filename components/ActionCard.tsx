@@ -38,11 +38,10 @@ const styles = StyleSheet.create({
   socialList: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    width: 300,
     backgroundColor: 'white',
     paddingVertical: 6,
     borderRadius: 20,
-    marginLeft: 16
+    marginHorizontal: 16
   },
 
   socialPic: {

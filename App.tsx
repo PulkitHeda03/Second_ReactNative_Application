@@ -4,6 +4,7 @@ import FlatCard from './components/FlatCard'
 import ElevatedCard from './components/ElevatedCard'
 import ImageCard from './components/ImageCard'
 import ActionCard from './components/ActionCard'
+import WeatherList from './components/WeatherList'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export class App extends Component {
@@ -15,6 +16,7 @@ export class App extends Component {
           <ElevatedCard/>
           <ImageCard/>
           <ActionCard/>
+          <WeatherList/>
         </ScrollView>
       </SafeAreaView>
     )
@@ -25,8 +27,8 @@ export default App
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#4f4d4dff',
+    backgroundColor: '#000',
     flex:1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   }
 })

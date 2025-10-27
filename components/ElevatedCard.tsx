@@ -9,7 +9,7 @@ export default function ElevatedCard() {
         horizontal
         contentContainerStyle={{ paddingHorizontal: 8, alignItems: 'center' }}
       >
-        <View style={styles.card}><Text>Tap</Text></View>
+        <View style={styles.card}><Text>Swipe</Text></View>
         <View style={styles.card}><Text>Me</Text></View>
         <View style={styles.card}><Text>To</Text></View>
         <View style={styles.card}><Text>See</Text></View>
