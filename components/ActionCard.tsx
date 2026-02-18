@@ -4,7 +4,13 @@ import React from 'react'
 export default function ActionCard() {
 
   function socailLink(websiteLink: string) {
-    Linking.openURL(websiteLink)
+    Linking.canOpenURL(websiteLink).then(supported => {
+      if (supported) {
+        Linking.openURL(websiteLink)
+      } else {
+        console.log("Don't know how to open URI: " + websiteLink)
+      }
+    })
   }
 
   return (
@@ -12,7 +18,7 @@ export default function ActionCard() {
       <Text style={styles.headingText}>ActionCard</Text>
       <View style={styles.socialList}>
         <TouchableOpacity onPress={()=>{socailLink('https://github.com/PulkitHeda03')}}>
-          <Image source={{ uri: 'https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_1280.png' }} style={styles.socialPic} />
+          <Image source={{ uri: 'https://cdn.pixabay.com/photo/2022/01/30/13/33/github-6980894_1280.png' }} style={styles.socialPic}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>{socailLink('https://in.linkedin.com/in/pulkit-heda-19032003ph')}}>
           <Image source={{ uri: 'https://content.linkedin.com/content/dam/me/business/en-us/amp/xbu/linkedin-revised-brand-guidelines/home/fg/brand-homepg-guidance-inlogo-dsk-v01.jpg.original.jpg' }} style={styles.socialPic} />
