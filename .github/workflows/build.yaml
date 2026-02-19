@@ -143,6 +143,7 @@ jobs:
       - name: Build iOS App
         working-directory: ios
         run: |
+          set -o pipefail
           xcodebuild -workspace secondProject.xcworkspace \
             -scheme secondProject \
             -configuration Release \
@@ -150,7 +151,7 @@ jobs:
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build \
             clean build \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO | xcpretty
 
       # ── 5. Upload Artifact ────────────────────────────────────────────────
       - name: Upload iOS App (Simulator)
