@@ -105,3 +105,72 @@ jobs:
           echo "To download via GitHub CLI:"
           echo "  gh run download ${{ github.run_id }} -n android-release-apk-${{ github.run_number }}"
           echo "============================================"
+
+  build-ios:
+    name: Build iOS App (Simulator)
+    runs-on: macos-latest
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      # ── 2. Node.js ─────────────────────────────────────────────────────────
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      # ── 3. CocoaPods ───────────────────────────────────────────────────────
+      - name: Cache CocoaPods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install CocoaPods
+        working-directory: ios
+        run: pod install
+
+      # ── 4. Build ───────────────────────────────────────────────────────────
+      - name: Build iOS App
+        working-directory: ios
+        run: |
+          xcodebuild -workspace secondProject.xcworkspace \
+            -scheme secondProject \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -derivedDataPath build \
+            clean build \
+            CODE_SIGNING_ALLOWED=NO
+
+      # ── 5. Upload Artifact ────────────────────────────────────────────────
+      - name: Upload iOS App (Simulator)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-simulator-build-${{ github.run_number }}
+          path: ios/build/Build/Products/Release-iphonesimulator/secondProject.app
+          retention-days: 30
+          if-no-files-found: error
+
+      # ── 6. Log artifact download URL ──────────────────────────────────────
+      - name: Log GitHub artifact download info
+        run: |
+          echo "============================================"
+          echo "  GitHub Actions Artifact Info"
+          echo "============================================"
+          echo "Artifact name : ios-simulator-build-${{ github.run_number }}"
+          echo "Retention     : 30 days"
+          echo "Download URL  : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo ""
+          echo "To download via GitHub CLI:"
+          echo "  gh run download ${{ github.run_id }} -n ios-simulator-build-${{ github.run_number }}"
+          echo "============================================"
